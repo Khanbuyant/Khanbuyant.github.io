@@ -263,19 +263,27 @@ footer{padding:0 0 72px;color:var(--muted)}
   setTheme(root.dataset.theme || 'light');
   if (load('lang') === 'mn') setLang('mn');
 
-  // Scroll reveal: items open from the top down as they enter the screen
-  if (!('IntersectionObserver' in window)) return;
+// Scroll reveal: items open from the top down as they enter the screen
   root.classList.add('js');
-  var items = document.querySelectorAll('main h2, .project, .job, #contact p');
+  var items = Array.prototype.slice.call(document.querySelectorAll('main h2, .project, .job, #contact p'));
   items.forEach(function (el) {
     el.classList.add('reveal');
     var sib = Array.prototype.filter.call(el.parentNode.children, function (n) { return n.classList.contains('reveal'); });
     el.style.setProperty('--d', (sib.indexOf(el) * 0.12) + 's');
   });
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
-  items.forEach(function (el) { io.observe(el); });
+  var ticking = false;
+  function check() {
+    ticking = false;
+    var limit = window.innerHeight * 0.92;
+    items = items.filter(function (el) {
+      if (el.getBoundingClientRect().top < limit) { el.classList.add('in'); return false; }
+      return true;
+    });
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(check); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  setTimeout(check, 50);
 })();
 </script>
 </body>
