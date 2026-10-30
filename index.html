@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Name | Portfolio</title>
+<meta name="description" content="Portfolio of Your Name, a [your role].">
+<script>
+// Set the theme before the page paints to avoid a flash
+(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}
+if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+document.documentElement.dataset.theme=t})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;600&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#EEF1F5; --ink:#14213D; --muted:#5B6577; --line:#D3D9E3; --accent:#2F5BFF; --panel:#E3E8F0;
+  --bar:rgba(238,241,245,.7); --track:rgba(110,125,150,.28); --edge:rgba(255,255,255,.55);
+  --knob:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.72));
+  --bar-h:56px;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F1626; --ink:#E8ECF4; --muted:#9AA5BA; --line:#25304A; --accent:#7A97FF; --panel:#172138;
+  --bar:rgba(15,22,38,.62); --track:rgba(255,255,255,.13); --edge:rgba(255,255,255,.16);
+  --knob:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.25));
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--bar-h) + 16px)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font:400 1.05rem/1.65 Figtree,Manrope,system-ui,sans-serif;transition:background .35s,color .35s}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,.glass-switch:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:64px}
+aside{position:sticky;top:var(--bar-h);align-self:start;padding:56px 0 48px}
+h1{font:800 clamp(3rem,7vw,5.5rem)/.95 "Bricolage Grotesque",Manrope,sans-serif;letter-spacing:-.03em}
+.role{margin-top:20px;font-weight:600;color:var(--accent)}
+.bio{margin-top:20px;color:var(--muted);max-width:34ch}
+main{padding:72px 0}
+h2{font:500 1.6rem "Bricolage Grotesque",Manrope,sans-serif;margin-bottom:24px}
+section+section{margin-top:72px}
+.project{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:24px;padding:28px 0;border-top:1px solid var(--line)}
+.project:last-child{border-bottom:1px solid var(--line)}
+.shot{aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.shot.empty{display:grid;place-items:center;padding:12px;text-align:center;color:var(--muted);font-size:.8rem}
+.shot.empty::after{content:attr(data-file)}
+.project h3{font:800 1.4rem "Bricolage Grotesque",Manrope,sans-serif}
+.project p{color:var(--muted);margin-top:8px}
+.project .learned{color:var(--ink);font-size:.95rem;margin-top:10px}
+.more{display:inline-block;margin-top:14px;font-weight:600;text-decoration:none}
+.more:hover{text-decoration:underline}
+.tags{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.tags span{background:var(--panel);padding:2px 12px;border-radius:99px;font-size:.85rem}
+.job{padding:16px 0;border-top:1px solid var(--line)}
+.job b{display:block}
+.job small{color:var(--muted)}
+.job p{color:var(--muted);margin-top:4px;font-size:.95rem}
+.intro{color:var(--muted);margin-bottom:24px;max-width:56ch}
+footer{padding:0 0 72px;color:var(--muted)}
+
+/* Top bar (glass) */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bar);border-bottom:1px solid var(--line);
+  -webkit-backdrop-filter:blur(18px) saturate(1.7);backdrop-filter:blur(18px) saturate(1.7);transition:background .35s}
+.topbar .inner{max-width:1100px;min-height:var(--bar-h);margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:24px}
+.brand{font:800 1.1rem "Bricolage Grotesque",Manrope,sans-serif;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.topbar nav{display:flex;gap:24px;margin-left:auto}
+.topbar nav a{color:var(--ink);text-decoration:none;font-weight:600;font-size:.95rem;border-bottom:2px solid transparent;padding:4px 0}
+.topbar nav a:hover{border-color:var(--accent)}
+.controls{display:flex;gap:10px}
+
+/* Glass sliding switch */
+.glass-switch{position:relative;display:flex;align-items:center;width:84px;height:34px;padding:3px;border:0;border-radius:99px;
+  cursor:pointer;background:var(--track);touch-action:pan-y;user-select:none;-webkit-user-select:none;
+  -webkit-backdrop-filter:blur(12px) saturate(1.6);backdrop-filter:blur(12px) saturate(1.6);
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.2),inset 0 0 0 1px var(--edge);transition:background .35s}
+.glass-switch[aria-checked="true"]{background:color-mix(in srgb,var(--accent) 42%,transparent)}
+.knob{position:absolute;top:3px;left:3px;width:39px;height:28px;border-radius:99px;background:var(--knob);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  box-shadow:0 3px 9px rgba(0,0,0,.3),0 0 0 .5px rgba(0,0,0,.1),inset 0 1.5px 1px rgba(255,255,255,.9),inset 0 -2px 4px rgba(255,255,255,.2);
+  transition:transform .45s cubic-bezier(.34,1.45,.5,1)}
+.glass-switch[aria-checked="true"] .knob{transform:translateX(39px)}
+.opt{position:relative;z-index:1;flex:1;display:grid;place-items:center;font:600 .78rem Figtree,Manrope,sans-serif;color:var(--muted);transition:color .3s;pointer-events:none}
+.glass-switch[aria-checked="false"] .opt:first-of-type,.glass-switch[aria-checked="true"] .opt:last-of-type{color:var(--ink)}
+
+/* Scroll reveal */
+.js .reveal{opacity:0;clip-path:inset(0 -8px 100% -8px);transform:translateY(28px);
+  transition:opacity .7s ease,clip-path .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);
+  transition-delay:var(--d,0s)}
+.js .reveal.in{opacity:1;clip-path:inset(-8px -8px -8px -8px);transform:none}
+@media (prefers-reduced-motion:reduce){
+  .js .reveal{opacity:1;clip-path:none;transform:none;transition:none}
+  .knob{transition:none}
+}
+@media(max-width:1000px){.project{grid-template-columns:1fr}.project .shot{max-width:480px}}
+@media(max-width:800px){
+  :root{--bar-h:92px}
+  .wrap{grid-template-columns:1fr;gap:0}
+  aside{position:static;padding:48px 0 0}
+  main{padding:48px 0}
+  .topbar .inner{flex-wrap:wrap;gap:6px 16px;padding-top:8px;padding-bottom:8px}
+  .brand{flex:1}
+  .controls{order:2}
+  .topbar nav{order:3;width:100%;margin-left:0;justify-content:space-between}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="#top" data-i18n="name">Your Name</a>
+    <nav aria-label="Sections">
+      <a href="#projects" data-i18n="nav_projects">Projects</a>
+      <a href="#about" data-i18n="nav_about">About</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="controls">
+      <button class="glass-switch" id="langSwitch" role="switch" aria-checked="false" aria-label="Монгол хэл / Mongolian">
+        <i class="knob"></i><span class="opt">EN</span><span class="opt">МН</span>
+      </button>
+      <button class="glass-switch" id="themeSwitch" role="switch" aria-checked="false" aria-label="Dark mode / Харанхуй горим">
+        <i class="knob"></i>
+        <span class="opt"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
+        <span class="opt"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="top">
+  <aside>
+    <h1 data-i18n="name">Your Name</h1>
+    <p class="role" data-i18n="role">[Your role, e.g. Web developer]</p>
+    <p class="bio" data-i18n="bio">A sentence or two about what you build and what you care about. Keep it plain and specific.</p>
+  </aside>
+
+  <main>
+    <section id="projects">
+      <h2 data-i18n="nav_projects">Projects</h2>
+      <article class="project">
+        <div class="shot" data-file="images/project-one.jpg"><img src="images/project-one.jpg" alt="Screenshot of project one" loading="lazy" onerror="this.parentNode.classList.add('empty');this.remove()"></div>
+        <div>
+          <h3 data-i18n="p1">Project one</h3>
+          <p data-i18n="p1d">What it does and who it helps, in one or two sentences. Mention a result if you have one.</p>
+          <p class="learned" data-i18n="p1l"><b>What I learned:</b> One or two things this project taught you.</p>
+          <div class="tags"><span>JavaScript</span><span>React</span></div>
+          <a class="more" href="https://github.com/yourusername/project-one" data-i18n="view">View on GitHub &rarr;</a>
+        </div>
+      </article>
+      <article class="project">
+        <div class="shot" data-file="images/project-two.jpg"><img src="images/project-two.jpg" alt="Screenshot of project two" loading="lazy" onerror="this.parentNode.classList.add('empty');this.remove()"></div>
+        <div>
+          <h3 data-i18n="p2">Project two</h3>
+          <p data-i18n="p2d">Describe the problem you solved and your part in it.</p>
+          <p class="learned" data-i18n="p2l"><b>What I learned:</b> A skill or idea you picked up while building it.</p>
+          <div class="tags"><span>Python</span><span>Flask</span></div>
+          <a class="more" href="https://github.com/yourusername/project-two" data-i18n="view">View on GitHub &rarr;</a>
+        </div>
+      </article>
+      <article class="project">
+        <div class="shot" data-file="images/project-three.jpg"><img src="images/project-three.jpg" alt="Screenshot of project three" loading="lazy" onerror="this.parentNode.classList.add('empty');this.remove()"></div>
+        <div>
+          <h3 data-i18n="p3">Project three</h3>
+          <p data-i18n="p3d">Another project worth showing. Three to five is plenty.</p>
+          <p class="learned" data-i18n="p3l"><b>What I learned:</b> What you would do differently next time.</p>
+          <div class="tags"><span>HTML</span><span>CSS</span></div>
+          <a class="more" href="https://github.com/yourusername/project-three" data-i18n="view">View on GitHub &rarr;</a>
+        </div>
+      </article>
+    </section>
+
+    <section id="about">
+      <h2 data-i18n="nav_about">About</h2>
+      <p class="intro" data-i18n="about_intro">I'm early in my career, so my projects are the best picture of what I can do. Here is the rest of my background.</p>
+      <div class="job"><b data-i18n="edu">Degree, School</b><small data-i18n="edud">2022 to 2026</small><p data-i18n="edut">What you studied and which courses mattered most.</p></div>
+      <div class="job"><b data-i18n="pt">Part-time job, Company</b><small data-i18n="ptd">2023 to present</small><p data-i18n="ptt">Skills like customer service, teamwork and time management. Say what you actually did and how it carries over to the work you want.</p></div>
+    </section>
+
+    <section id="contact">
+      <h2 data-i18n="nav_contact">Contact</h2>
+      <p data-i18n="contact">Email me at <a href="mailto:you@example.com">you@example.com</a>, or find me on
+        <a href="https://github.com/yourusername">GitHub</a> and
+        <a href="https://linkedin.com/in/yourusername">LinkedIn</a>.</p>
+    </section>
+  </main>
+</div>
+<footer class="wrap"><span data-i18n="foot">&copy; 2026 Your Name</span></footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function save(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+  // Mongolian text. English is read from the page itself.
+  var MN = {
+    title: 'Таны нэр | Портфолио',
+    name: 'Таны нэр',
+    nav_projects: 'Төслүүд', nav_about: 'Миний тухай', nav_contact: 'Холбоо барих',
+    role: '[Таны мэргэжил, жишээ нь Вэб хөгжүүлэгч]',
+    bio: 'Та юу бүтээдэг, юунд анхаардаг талаараа нэг, хоёр өгүүлбэр бичээрэй. Энгийн бөгөөд тодорхой байлгаарай.',
+    p1: 'Төсөл нэг', p1d: 'Энэ юу хийдэг, хэнд тусалдаг талаар нэг, хоёр өгүүлбэрээр. Үр дүн байвал дурдаарай.', p1l: '<b>Юу сурсан бэ:</b> Энэ төслөөс сурсан нэг, хоёр зүйлээ бичээрэй.',
+    p2: 'Төсөл хоёр', p2d: 'Таны шийдсэн асуудал болон таны гүйцэтгэсэн үүргийг тайлбарлаарай.', p2l: '<b>Юу сурсан бэ:</b> Бүтээх явцад эзэмшсэн ур чадвар эсвэл санаагаа бичээрэй.',
+    p3: 'Төсөл гурав', p3d: 'Үзүүлэх нэг өөр сайн төсөл. Гурваас тав хангалттай.', p3l: '<b>Юу сурсан бэ:</b> Дараагийн удаа юуг өөрөөр хийхээ бичээрэй.',
+    view: 'GitHub дээр үзэх &rarr;',
+    about_intro: 'Би ажлын гараагаа дөнгөж эхэлж байгаа тул төслүүд маань миний чадварыг хамгийн сайн харуулна. Бусад танилцуулга энд байна.',
+    edu: 'Зэрэг, Сургууль', edud: '2022 - 2026', edut: 'Юу судалсан, ямар хичээлүүд хамгийн чухал байсан талаараа бичээрэй.',
+    pt: 'Цагийн ажил, Компани', ptd: '2023 оноос одоог хүртэл', ptt: 'Үйлчлүүлэгчид үйлчлэх, багаар ажиллах, цаг төлөвлөх зэрэг чадвар. Яг юу хийснээ болон хүссэн чиглэлдээ хэрхэн хэрэгтэйг бичээрэй.',
+    contact: 'Надтай <a href="mailto:you@example.com">you@example.com</a> хаягаар холбогдоорой, мөн <a href="https://github.com/yourusername">GitHub</a> болон <a href="https://linkedin.com/in/yourusername">LinkedIn</a> дээрээс олж болно.',
+    foot: '&copy; 2026 Таны нэр'
+  };
+  var els = document.querySelectorAll('[data-i18n]');
+  els.forEach(function (el) { el.dataset.en = el.innerHTML; });
+  var titleEn = document.title;
+  var langSw = document.getElementById('langSwitch');
+  var themeSw = document.getElementById('themeSwitch');
+
+  function setLang(l) {
+    root.lang = l === 'mn' ? 'mn' : 'en';
+    els.forEach(function (el) { el.innerHTML = l === 'mn' ? MN[el.dataset.i18n] : el.dataset.en; });
+    document.title = l === 'mn' ? MN.title : titleEn;
+    langSw.setAttribute('aria-checked', l === 'mn');
+    save('lang', l);
+  }
+  function setTheme(t) {
+    root.dataset.theme = t;
+    themeSw.setAttribute('aria-checked', t === 'dark');
+    save('theme', t);
+  }
+
+  // Make a switch that can be clicked, dragged like a knob, or used with the keyboard
+  function wire(sw, set) {
+    var knob = sw.querySelector('.knob'), id = null, startX = 0, startOn = false, drag = false, x = 0;
+    function isOn() { return sw.getAttribute('aria-checked') === 'true'; }
+    function reset() { knob.style.transition = ''; knob.style.transform = ''; id = null; }
+    sw.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      id = e.pointerId; startX = e.clientX; startOn = isOn(); drag = false;
+      try { sw.setPointerCapture(id); } catch (err) {}
+    });
+    sw.addEventListener('pointermove', function (e) {
+      if (id === null) return;
+      var dx = e.clientX - startX;
+      if (!drag && Math.abs(dx) > 4) { drag = true; knob.style.transition = 'none'; }
+      if (drag) {
+        x = Math.max(0, Math.min(39, (startOn ? 39 : 0) + dx));
+        knob.style.transform = 'translateX(' + x + 'px)';
+      }
+    });
+    sw.addEventListener('pointerup', function () {
+      if (id === null) return;
+      var moved = drag;
+      reset();
+      set(moved ? x > 19.5 : !startOn);
+    });
+    sw.addEventListener('pointercancel', reset);
+    sw.addEventListener('click', function (e) { if (e.detail === 0) set(!isOn()); });
+  }
+  wire(langSw, function (on) { setLang(on ? 'mn' : 'en'); });
+  wire(themeSw, function (on) { setTheme(on ? 'dark' : 'light'); });
+
+  setTheme(root.dataset.theme || 'light');
+  if (load('lang') === 'mn') setLang('mn');
+
+  // Scroll reveal: items open from the top down as they enter the screen
+  if (!('IntersectionObserver' in window)) return;
+  root.classList.add('js');
+  var items = document.querySelectorAll('main h2, .project, .job, #contact p');
+  items.forEach(function (el) {
+    el.classList.add('reveal');
+    var sib = Array.prototype.filter.call(el.parentNode.children, function (n) { return n.classList.contains('reveal'); });
+    el.style.setProperty('--d', (sib.indexOf(el) * 0.12) + 's');
+  });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
